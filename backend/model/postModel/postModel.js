@@ -17,23 +17,14 @@ const postSchema = new Schema({
     ref: 'User',
     required: [true, 'Author is required']
   },
-  tags: {
-    type: [String],
-    validate: {
-      validator: function(v) {
-        return Array.isArray(v) && v.length > 0;
-      },
-      message: 'A post must have at least one tag'
-    }
-  },
   likes: {
     type: Number,
     default: 0,
     min: [0, 'Likes cannot be negative']
   },
   comments: {
-    type: String,
-    minlength: [1, 'Comments must be at least 1 character long'],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Comment'
   },
   createdAt: {
     type: Date,

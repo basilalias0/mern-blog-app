@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
+const { param } = require('../routes/userRoute')
 
 
 const UserController = {
@@ -30,7 +31,7 @@ const UserController = {
                 const payload={
                     username
                 }
-                const token = jwt.sign(payload,process.env.jwtSecretKey)
+                const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
 
 
                 res.cookie('token',token,{
@@ -64,7 +65,7 @@ const UserController = {
                 const payload={
                     username,
                 }
-                const token = jwt.sign(payload,process.env.jwtSecretKey)
+                const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
 
 
                 res.cookie('token',token,{
@@ -85,6 +86,35 @@ const UserController = {
         }
 
     }),
+    userProfile:asyncHandler(async(req,res)=>{
+        const {username} = req.user
+        const userFound = await User.findOne({username})
+        res.json({
+            name:userFound.name,
+            username:userFound.username,
+            email:userFound.email,
+            posts:userFound.posts,
+            profileImage:userFound.profileImage,
+            coverImage:userFound.coverImage,
+
+        })
+    }),
+    userDetails:asyncHandler(async(req,res)=>{
+        const {id} = req.params
+        const userFound = await User.findById(id)
+        if(!userFound){
+            throw new Error("User not found ")
+        }
+        res.json({
+            name:userFound.name,
+            username:userFound.username,
+            posts:userFound.posts,
+            profileImage:userFound.profileImage,
+            coverImage:userFound.coverImage,
+
+        })
+
+    }),
     updateName: asyncHandler(async(req,res)=>{
         const {name} = req.body
         const {username} = req.user
@@ -94,7 +124,7 @@ const UserController = {
             const payload={
                 username
             }
-            const token = jwt.sign(payload,process.env.jwtSecretKey)
+            const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
     
     
             res.cookie('token',token,{
@@ -134,7 +164,7 @@ const UserController = {
             username
         }
         
-        const token = jwt.sign(payload, process.env.jwtSecretKey);
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
             res.cookie('token',token,{
                 maxAge:1*24*60*1000,
                 httpOnly:true,
@@ -169,7 +199,7 @@ const UserController = {
             const payload = {
                 username
             }
-            const token = jwt.sign(payload, process.env.jwtSecretKey);
+            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
             res.json({
                 username,
                 token,
