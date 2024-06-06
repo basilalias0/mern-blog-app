@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
-const { param } = require('../routes/userRoute')
 
 
 const UserController = {

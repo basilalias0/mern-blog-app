@@ -20,6 +20,9 @@ const postController={
         })
         console.log(createdPost);
         const userDetailUpdate = await User.updateOne({username:userFound.username},{$push:{posts:createdPost._id}})
+        if(!userDetailUpdate){
+            throw new Error("userDetailUpdate didn't updated")
+        }
         console.log(userDetailUpdate);
         res.json({
             message:"post created successfully"
@@ -79,6 +82,9 @@ const postController={
             { _id: postId },
             { $set: updateObject }
           )
+          if(!result){
+            throw new Error("Result not found")
+        }
         console.log(result)
         res.json({
             message:"Post updated"
@@ -86,7 +92,10 @@ const postController={
         }),
     deletePost:asyncHandler(async(req,res)=>{
         const {postId} = req.params
-        await Post.findByIdAndDelete(postId)
+        const postDelete = await Post.findByIdAndDelete(postId)
+        if(!postDelete){
+            throw new Error("Post not deleted")
+        }
         res.json({
             message:"Post deleted"
         })
