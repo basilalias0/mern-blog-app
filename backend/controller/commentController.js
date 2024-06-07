@@ -40,13 +40,14 @@ const commentController = {
     }),
     updateComment:asyncHandler(async(req,res)=>{
         const {commentId} = req.params
-        const content = req.body
-        const updatedComment = await Comment.findByIdAndUpdate(commentId,{content})
+        const {content} = req.body
+        const updatedComment = await Comment.findByIdAndUpdate(commentId,{content},{new:true,runValidators:true})
         if(!updatedComment){
             throw new Error("Comment update Failed")
         }
         res.json({
-            message:"Comment successfully updated"
+            message:"Comment successfully updated",
+            comment:updatedComment
         })
     }),
     deleteComment:asyncHandler(async(req,res)=>{

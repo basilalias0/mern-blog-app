@@ -8,6 +8,7 @@ const User = require('../model/userModel/userModel')
 const postController={
     createPost:asyncHandler(async(req,res)=>{
         const {title,content}= req.body
+        const {username} = req.user
         const userFound = await User.findOne({username:req.user.username})
         if(!title || !content){
             throw new Error("Must include Title and content")
@@ -34,14 +35,14 @@ const postController={
         if(!postFound){
             throw new Error("Post not found")
         }
-        const authorFound = await User.findById(postFound.author.name)
+        const authorFound = await User.findById(postFound.author._id)
         if(!authorFound){
             throw new Error("Author of the post not found")
         }
         res.json({
            title:postFound.title,
            content:postFound.content,
-           author:authorFound,
+           author:authorFound.name,
            updatedAt:postFound.updatedAt,
            likes:postFound.likes,
            comments:postFound.comments,
@@ -49,47 +50,65 @@ const postController={
     }),
     addLike:asyncHandler(async(req,res)=>{
         const {postId} = req.params
-        const postFound = await Post.updateOne({_id:postId},{likes:likes+1})
+        const postFound = await Post.findById(postId)
         if(!postFound){
             throw new Error("Post not found")
         }
-        console.log(postFound);
+        const updatedLike = postFound.likes+1
+        const updatedPost = await Post.findByIdAndUpdate(postId,
+            {likes:updatedLike},
+            {new:true,runValidators:true}
+        )
+        if(!updatedPost){
+            throw new Error("Post not updated")
+        }
         res.json({
-            message:"Post updated"
+            message:"Post updated",
+            post:updatedPost
         })
     }),
     undoLike:asyncHandler(async(req,res)=>{
         const {postId} = req.params
-        const postFound = await Post.updateOne({_id:postId},{likes:likes-1})
+        const postFound = await Post.findById(postId)
         if(!postFound){
             throw new Error("Post not found")
         }
+        const updatedLike = postFound.likes-1
+        const updatedPost = await Post.findByIdAndUpdate(postId,
+            {likes:updatedLike},
+            {new:true,runValidators:true}
+        )
+        if(!updatedPost){
+            throw new Error("Post not updated")
+        }
         res.json({
-            message:"Post updated"
+            message:"Post updated",
+            post:updatedPost
         })
     }),
     updatePost:asyncHandler(async(req,res)=>{
         const {postId} = req.params
         const {title,content} = req.body
-        if(!title || !content){
-            throw new Error("Need to content or title to edit")
+        if(!title && !content){
+            throw new Error("Need content or title to edit")
         }
         const updateObject = {};
         if (content) updateObject.content = content;
         if (title) updateObject.title = title;
 
-        const result = await User.updateOne(
-            { _id: postId },
-            { $set: updateObject }
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+            { $set: updateObject },
+            { new: true, runValidators:true } 
           )
-          if(!result){
-            throw new Error("Result not found")
+          if(!updatedPost){
+            throw new Error("Post not updated")
         }
-        console.log(result)
         res.json({
-            message:"Post updated"
+            message:"Post updated",
+            post:updatedPost
         })
-        }),
+    }),
     deletePost:asyncHandler(async(req,res)=>{
         const {postId} = req.params
         const postDelete = await Post.findByIdAndDelete(postId)

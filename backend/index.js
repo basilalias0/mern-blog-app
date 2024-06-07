@@ -3,13 +3,16 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
-const userRoute = require('./routes/userRoute');
 const errorHandler = require('./middleware/errorhandle');
+const postRouter = require('./routes/postRoute');
+const userRouter = require('./routes/userRoute');
+const commentRouter = require('./routes/commentRoute');
+const DBConnectionString = process.env.MONGO_CONNECTION_STRING
 
 
 const mongooseConnect = async()=>{
     try {
-        await mongoose.connect("mongodb+srv://basilalyas2000:CiWirS7XQ6MPy0U0@blogmain.2zbtee7.mongodb.net/?retryWrites=true&w=majority&appName=BlogMain")
+        await mongoose.connect(DBConnectionString)
     console.log("DB Connected successfully");
         } catch (error) {
         console.log(error);
@@ -32,7 +35,9 @@ app.get('/',(req,res)=>{
     })
 })
 
-app.use('/api/v1/user',userRoute)
+app.use('/api/v1/user',userRouter)
+app.use('/api/v1/post',postRouter)
+app.use('/api/v1/post',commentRouter)
 
 app.use(errorHandler)
 

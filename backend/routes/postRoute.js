@@ -1,13 +1,17 @@
 const express = require("express")
 const isAuth = require("../middleware/auth")
 const postController = require("../controller/postController")
-const postRoute = express.Router()
+const postRouter = express.Router()
 
 
 
-postRoute.post('/create-post',postController.createPost)
-postRoute.get('/:postId',postController.viewPost)
-postRoute.put('/:postId',postController.updatePost)
-postRoute.delete('/:postId',postController.deletePost)
-postRoute.put('/:postId/add-like',postController.addLike)
-postRoute.put('/:postId/undo-like',postController.undoLike)
+
+postRouter.post('/create-post',isAuth,postController.createPost)
+postRouter.get('/:postId',postController.viewPost)
+postRouter.put('/:postId',postController.updatePost)
+postRouter.delete('/:postId',postController.deletePost)
+postRouter.put('/:postId/add-like',postController.addLike)
+postRouter.put('/:postId/undo-like',postController.undoLike)
+
+
+module.exports = postRouter

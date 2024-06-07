@@ -23,6 +23,7 @@ const UserController = {
             const createdUser = await User.create({
                 name,
                 username,
+                email,
                 password:hashedPassword
             }) 
 
@@ -57,32 +58,33 @@ const UserController = {
         const userFound = await User.findOne({username})
         if(!userFound){
             throw new Error("User does not exist")
-        }else{
-            if (password !== userFound.password){
-                throw new Error("Password not match")
-            }else{
-                const payload={
-                    username,
-                }
-                const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
-
-
-                res.cookie('token',token,{
-                    maxAge:1*24*60*60*1000,
-                    secure:false,
-                    sameSite:'strict',
-                    httpOnly:true,
-
-                })
-                res.json({
-                    name:userFound.name,
-                    email:userFound.email,
-                    username,
-                    token
-                })
-                
-            }
         }
+        const comparedPassword = bcrypt.compare(password,userFound.password)
+        if (!comparedPassword){
+                throw new Error("Password not match")
+        }
+        const payload={
+           username,
+        }
+         const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
+
+
+        res.cookie('token',token,{
+        maxAge:1*24*60*60*1000,
+        secure:false,
+        sameSite:'strict',
+        httpOnly:true,
+
+         })
+        res.json({
+        name:userFound.name,
+        email:userFound.email,
+        username,
+        token
+         })
+                
+    
+        
 
     }),
     userProfile:asyncHandler(async(req,res)=>{
@@ -93,6 +95,7 @@ const UserController = {
             username:userFound.username,
             email:userFound.email,
             posts:userFound.posts,
+            id:userFound._id,
             profileImage:userFound.profileImage,
             coverImage:userFound.coverImage,
 
@@ -119,7 +122,9 @@ const UserController = {
         const {username} = req.user
         const userFound = await User.findOne({username})
         const updatedUser = await User.updateOne({username},{name})
-        if(updatedUser){
+        if(!updatedUser){
+            throw new Error("Name not updated")
+        }
             const payload={
                 username
             }
@@ -139,7 +144,7 @@ const UserController = {
                 email:userFound.email,
                 token
             })
-        }
+        
         
 
         
@@ -194,18 +199,22 @@ const UserController = {
         const passwordChanged = await User.updateOne({username},{password:hashedPassword})
         if(!passwordChanged){
             throw new Error("Password not changed")
-        }else{
-            const payload = {
-                username
-            }
-            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
-            res.json({
-                username,
-                token,
-                email:userFound.email,
-                name:userFound.name
-               })
         }
+        const payload = {
+            username
+        }
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+        res.json({
+            username,
+            token,
+            email:userFound.email,
+            name:userFound.name
+            })
+        
+    }),
+    logoutUser:asyncHandler(async(req,res)=>{
+        res.clearCookie('token')
+        res.json({ message: 'Logged out successfully' });
     }),
 
 
