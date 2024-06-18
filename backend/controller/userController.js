@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
+const Post = require('../model/postModel/postModel')
 
 
 const UserController = {
@@ -107,10 +108,12 @@ const UserController = {
         if(!userFound){
             throw new Error("User not found ")
         }
+        const posts = await Post.find({author:id})
+        console.log(posts);
         res.json({
             name:userFound.name,
             username:userFound.username,
-            posts:userFound.posts,
+            posts,
             profileImage:userFound.profileImage,
             coverImage:userFound.coverImage,
 

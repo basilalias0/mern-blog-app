@@ -8,7 +8,6 @@ const User = require('../model/userModel/userModel')
 const postController={
     createPost:asyncHandler(async(req,res)=>{
         const {title,content}= req.body
-        const {username} = req.user
         const userFound = await User.findOne({username:req.user.username})
         if(!title || !content){
             throw new Error("Must include Title and content")
@@ -118,6 +117,11 @@ const postController={
         res.json({
             message:"Post deleted"
         })
+    }),
+    allPost:asyncHandler(async(req,res)=>{
+        const allPostList = await Post.find()
+        const sortedPost = allPostList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        res.send(sortedPost)
     })
         
         

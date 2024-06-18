@@ -7,6 +7,7 @@ const errorHandler = require('./middleware/errorhandle');
 const postRouter = require('./routes/postRoute');
 const userRouter = require('./routes/userRoute');
 const commentRouter = require('./routes/commentRoute');
+const postController = require('./controller/postController');
 const DBConnectionString = process.env.MONGO_CONNECTION_STRING
 
 
@@ -29,12 +30,7 @@ app.use(express.json())
 
 
 
-app.get('/',(req,res)=>{
-    res.json({
-        message:"Hello world"
-    })
-})
-
+app.get('/api/v1/home',postController.allPost)
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/post',postRouter)
 app.use('/api/v1/post',commentRouter)
