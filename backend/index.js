@@ -8,6 +8,7 @@ const postRouter = require('./routes/postRoute');
 const userRouter = require('./routes/userRoute');
 const commentRouter = require('./routes/commentRoute');
 const postController = require('./controller/postController');
+const cors = require('cors');
 const DBConnectionString = process.env.MONGO_CONNECTION_STRING
 
 
@@ -27,7 +28,11 @@ mongooseConnect()
 app.use(cookieParser())
 app.use(express.json())
 
-
+const corsOption ={
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+app.use(cors(corsOption))
 
 
 app.get('/api/v1/home',postController.allPost)
