@@ -34,6 +34,9 @@ const userSchema = new mongoose.Schema({
       posts:[{
         type:mongoose.Schema.Types.ObjectId
       }],
+      likedPosts:[{
+        type:mongoose.Schema.Types.ObjectId
+      }],
       comments:[{
         type:mongoose.Schema.Types.ObjectId
       }],

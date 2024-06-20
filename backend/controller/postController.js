@@ -61,6 +61,11 @@ const postController={
         if(!updatedPost){
             throw new Error("Post not updated")
         }
+        const userFound = await User.findOneAndUpdate({username:req.user.username},{$push:{likedPosts:postId}})
+        if(!userFound){
+            throw new Error("User not Found")
+        }
+        await userFound.likedPosts
         res.json({
             message:"Post updated",
             post:updatedPost

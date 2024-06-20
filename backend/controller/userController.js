@@ -60,9 +60,9 @@ const UserController = {
         if(!userFound){
             throw new Error("User does not exist")
         }
-        const comparedPassword = bcrypt.compare(password,userFound.password)
+        const comparedPassword = await bcrypt.compare(password,userFound.password)
         if (!comparedPassword){
-                throw new Error("Password not match")
+                throw new Error("Password does not match")
         }
         const payload={
            username,
