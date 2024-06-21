@@ -3,13 +3,14 @@ import '../Public/Stylesheet.css'
 import Logo from '../Public/Images/logo.png'
 import AuthPageAside from "../components/AuthPageAside";
 import { useDispatch } from "react-redux";
-import {signupAction } from "../Redux/AuthSlice";
+import {loginAction, signupAction } from "../Redux/AuthSlice";
 import Alert from '@mui/material/Alert';
 import { useMutation } from "@tanstack/react-query";
 import {Link, useNavigate} from 'react-router-dom'
 import {useFormik } from 'formik';
 import * as Yup from 'yup';
 import { signupAPI } from "../Services/userServices";
+import Cookies from 'js-cookie'
 
 function SectionHeader({ title, imageSrc, imageAlt }) {
   return (
@@ -58,7 +59,8 @@ function SignupPage() {
     onSubmit:(values)=>{
             mutateAsync(values)
             .then((data)=>{
-                dispatch(signupAction(data))
+                dispatch(loginAction(data))
+                Cookies.set("userData",JSON.stringify(data),{expires:1})
                 navigate('/feeds')
             })
             .catch((e)=>console.log(e))

@@ -1,15 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { userData } from '../Utils/cookieHandler'
+
 
 
 export const AuthSlice= createSlice({
     name:"authSlice",
     initialState:{
-        user:{
-            name:null,
-            username:null,
-            email:null,
-            token:null
-        }
+        user:userData || null
     },
     reducers:{
         loginAction:((state,action)=>{

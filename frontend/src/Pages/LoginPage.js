@@ -10,6 +10,7 @@ import { loginAPI } from "../Services/userServices";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../Redux/AuthSlice";
 import Alert from '@mui/material/Alert';
+import Cookies from 'js-cookie'
 
 
 function SectionHeader({ title, imageSrc, imageAlt }) {
@@ -57,6 +58,7 @@ function LoginPage() {
             mutateAsync(values)
             .then((data)=>{
                 dispatch(loginAction(data))
+                Cookies.set("userData",JSON.stringify(data),{expires:1})
                 navigate('/feeds')
             })
             .catch((e)=>console.log(e))
@@ -81,7 +83,7 @@ function LoginPage() {
           <div className="mb-4 pt-4">
           <input
             type="text"
-            id="email"
+            id="username"
             placeholder="Username*"
             {...formik.getFieldProps("username")}
             className="w-full text-gray-700 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"

@@ -81,7 +81,8 @@ const UserController = {
         name:userFound.name,
         email:userFound.email,
         username,
-        token
+        token,
+        likedPosts:userFound.likedPosts
          })
                 
     

@@ -1,4 +1,5 @@
 import * as React from "react";
+import proPic from '../Public/Images/proPic.png'
 
 function Avatar({ src, alt }) {
   return <img loading="lazy" src={src} alt={alt} className="shrink-0 w-10 aspect-square fill-zinc-300" />;
@@ -29,7 +30,7 @@ function ViewComment() {
   return (
     <section className="flex flex-col mt-2 py-1 pr-16 pl-5 bg-sky-100 max-w-[877px] max-md:pr-5">
       <header className="flex gap-2 mt-2 items-start self-start">
-        <Avatar src="https://cdn.builder.io/api/v1/image/assets/TEMP/9dad969dd8700b5775333cac498c81937225fb2ddeaf8f9fb6b047d3d91cdf5e?apiKey=5c025788d7dd4263bf85a4f7bfa9ed1a&" alt="Author's Avatar" />
+        <Avatar src={proPic} alt="Author's Avatar" />
         <AuthorInfo name="Name of the Author" date="Created Date" />
       </header>
       <CommentContent text="Content of the Comment" />

@@ -29,23 +29,24 @@ const postController={
         })
     }),
     viewPost:asyncHandler(async(req,res)=>{
-        const {postId} = req.params
-        const postFound = await Post.findById(postId)
-        if(!postFound){
-            throw new Error("Post not found")
+        const allPost = await Post.aggregate([
+            {
+                $lookup: {
+                  from: 'users', // collection name in db
+                  localField: 'author',
+                  foreignField: '_id',
+                  as: 'author',
+                },
+            },
+            {
+              $unwind: '$author',
+            },
+          ]);
+        if(!allPost){
+            throw new Error("Failed to fetch posts")
         }
-        const authorFound = await User.findById(postFound.author._id)
-        if(!authorFound){
-            throw new Error("Author of the post not found")
-        }
-        res.json({
-           title:postFound.title,
-           content:postFound.content,
-           author:authorFound.name,
-           updatedAt:postFound.updatedAt,
-           likes:postFound.likes,
-           comments:postFound.comments,
-        })
+        const sortedPost = allPost.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        res.send(sortedPost)
     }),
     addLike:asyncHandler(async(req,res)=>{
         const {postId} = req.params
