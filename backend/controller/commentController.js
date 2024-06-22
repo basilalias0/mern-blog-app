@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler")
 const Post = require("../model/postModel/postModel");
 const User = require('../model/userModel/userModel');
 const Comment = require('../model/commentModel/commentModel')
+const mongoose = require('mongoose');
 
 
 const commentController = {
@@ -29,15 +30,43 @@ const commentController = {
             message:"comment created successfully"
         })
     }),
-    viewComments: asyncHandler(async(req,res)=>{
-        const {postId} = req.params
-        const commentList = await Comment.find({post:postId})
-        if(!commentList){
-            throw new Error("comments didn't get")
-        }
-        const sortedComment = commentList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        res.send(sortedComment)
-    }),
+    viewComments: asyncHandler(async (req, res) => {
+        const { postId } = req.params;
+          const comments = await Post.aggregate([
+            {
+              $match: {
+                _id: new mongoose.Types.ObjectId(postId), // Convert string ID to ObjectId
+              },
+            },
+            {
+              $unwind: '$comments', // Unwind comments array within the Post document
+            },
+            {
+              $lookup: {
+                from: 'comments', // Assuming Comment collection holds detailed comment data
+                localField: 'comments', // Field in Post referencing comment IDs
+                foreignField: '_id', // Field in Comment identifying the comment
+                as: 'commentInfo', // Alias for the joined comment information
+              },
+            },
+            {
+              $lookup: {
+                from: 'users', // Assuming User collection holds author details
+                localField: 'commentInfo.author', // Field in Comment referencing the author
+                foreignField: '_id', // Field in User identifying the author
+                as: 'authorInfo', // Alias for the joined author information
+              },
+            },
+            {
+              $unwind: '$authorInfo', // Unwind authorInfo if it's an array (optional)
+            },
+            {
+              $sort: { 'commentInfo.createdAt': -1 }, // Sort comments by creation date (descending)
+            },
+          ]);
+          res.send(comments);
+      }),
+
     updateComment:asyncHandler(async(req,res)=>{
         const {commentId} = req.params
         const {content} = req.body
@@ -51,11 +80,16 @@ const commentController = {
         })
     }),
     deleteComment:asyncHandler(async(req,res)=>{
-        const {commentId} = req.params
+        const {commentId,postId} = req.params
         const deletedComment = await Comment.findByIdAndDelete(commentId)
         if(!deletedComment){
             throw new Error("Comment delete Failed")
         }
+        const pullCommentFromPost = await Post.findByIdAndUpdate(postId,
+            {$pull:{comments:commentId}},
+            {new:true,runValidators:true}
+            
+        )
         res.json({
             message:"Comment successfully deleted"
         })

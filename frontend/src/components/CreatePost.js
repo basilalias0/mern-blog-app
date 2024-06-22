@@ -8,14 +8,14 @@ import Alert from '@mui/material/Alert';
 
 
 const createPostValidationSchema = Yup.object({
-    title:Yup.string().required("Title of the post must be required!").min(3,"title of the post must be more than 2 characters"),
-    content:Yup.string().min(5,"Minimum 5 Characters").required("Content must be required!")
+    title:Yup.string().required("Title of the post must be required!").min(3,"Title of the post must be more than 2 characters!"),
+    content:Yup.string().min(5,"Minimum 5 Characters!").required("Content must be required!")
 })
 
 
 function CreatePost() {
-    const [isTitleActive,setIsTitleActive]= useState(false)
-    const [isContentActive,setIsContentActive]= useState(false)
+    const [isTitleActive,setIsTitleActive]= useState(true)
+    const [isContentActive,setIsContentActive]= useState(true)
 
     const closeTitleBtn = ()=>{
         setIsTitleActive(false)
@@ -36,10 +36,11 @@ function CreatePost() {
                 content:''
         },
         validationSchema:createPostValidationSchema,
-        onSubmit:(values)=>{
+        onSubmit:(values,{resetForm})=>{
             mutateAsync(values)
             .then((data)=>{
             queryClient.invalidateQueries('fetch all post')
+            resetForm()
             })
             .catch((e)=>console.log(e))
         }
@@ -48,12 +49,12 @@ function CreatePost() {
   return (
     <div className="flex flex-col items-center pb-10 bg-sky-50 ">
         <form onSubmit={formik.handleSubmit} className="flex flex-col px-4 py-3 mt-2.5 max-w-full text-base bg-sky-50 rounded-md text-stone-900 w-[877px] shadow-md">
-        <header className="justify-center items-start px-4 py-5 bg-white rounded-md max-md:pr-5 max-md:max-w-full">
+        <header className="justify-center items-start  bg-white rounded-md max-md:pr-5 max-md:max-w-full">
           <input
           placeholder='Share your thoughts here!!'
           name='title'
           {...formik.getFieldProps("title")}
-          className='w-full focus:outline-none'
+          className='w-full focus:outline-none px-4 py-5 '
           id='title'
           type="text"
           onFocus={(()=>{
@@ -61,7 +62,7 @@ function CreatePost() {
           })}/>
           
         </header>
-        {isTitleActive ? formik.touched.title && formik.errors.title && (<span className=" mt-3 w-full bg-red-600 text-white px-4 py-2 rounded shadow-lg">
+        {isTitleActive ? formik.touched.title && formik.errors.title && (<span className=" mt-3 w-full bg-red-600 text-white px-4 py-2 rounded-md shadow-lg">
         <span onClick={closeTitleBtn} className="close-btn pl-2 float-right cursor-pointer">
             &times;
           </span>
@@ -96,13 +97,13 @@ function CreatePost() {
           </div>
           
         </div>
-        {isContentActive ? formik.touched.content && formik.errors.content && (<span className=" mt-3 w-full bg-red-600 text-white px-4 py-2 rounded shadow-lg">
+        {isContentActive ? formik.touched.content && formik.errors.content && (<span className=" mt-3 w-full bg-red-600 text-white px-4 py-2 rounded-md shadow-lg">
         <span onClick={closeContentBtn} className="close-btn pl-2 float-right cursor-pointer">
             &times;
           </span>
           {formik.errors.content}</span>):""}
       </form>
-      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px",width:"47%"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+          {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px",width:"47%"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
           {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px", width:"47%"}} severity="info"> Loading... </Alert>}
     </div>
   );

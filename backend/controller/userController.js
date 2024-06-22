@@ -47,7 +47,7 @@ const UserController = {
                     username,
                     email,
                     token,
-                    id:_id
+                    id:createdUser._id
                 })
             }else{
                 throw new Error("User didn't created")
