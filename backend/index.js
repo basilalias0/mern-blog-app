@@ -35,7 +35,7 @@ const corsOption ={
 app.use(cors(corsOption))
 
 
-app.get('/api/v1/home',postController.allPost)
+
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/post',postRouter)
 app.use('/api/v1/post',commentRouter)

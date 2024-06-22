@@ -17,10 +17,9 @@ const postSchema = new Schema({
     ref: 'User',
     required: [true, 'Author is required']
   },
-  likes: {
-    type: Number,
-    default: 0,
-    min: [0, 'Likes cannot be negative']
+  likedUser:{
+    type:[mongoose.Schema.Types.ObjectId],
+    ref:"User"
   },
   comments: {
     type: [mongoose.Schema.Types.ObjectId],

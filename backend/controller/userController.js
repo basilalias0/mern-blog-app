@@ -25,7 +25,7 @@ const UserController = {
                 name,
                 username,
                 email,
-                password:hashedPassword
+                password:hashedPassword,
             }) 
 
             if(createdUser){
@@ -46,7 +46,8 @@ const UserController = {
                     name,
                     username,
                     email,
-                    token
+                    token,
+                    id:_id
                 })
             }else{
                 throw new Error("User didn't created")
@@ -82,7 +83,7 @@ const UserController = {
         email:userFound.email,
         username,
         token,
-        likedPosts:userFound.likedPosts
+        id:userFound._id
          })
                 
     
@@ -110,7 +111,7 @@ const UserController = {
             throw new Error("User not found ")
         }
         const posts = await Post.find({author:id})
-        console.log(posts);
+        
         res.json({
             name:userFound.name,
             username:userFound.username,

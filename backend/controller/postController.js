@@ -18,7 +18,6 @@ const postController={
             content,
             author:userFound._id
         })
-        console.log(createdPost);
         const userDetailUpdate = await User.updateOne({username:userFound.username},{$push:{posts:createdPost._id}})
         if(!userDetailUpdate){
             throw new Error("userDetailUpdate didn't updated")
@@ -49,24 +48,23 @@ const postController={
         res.send(sortedPost)
     }),
     addLike:asyncHandler(async(req,res)=>{
-        const {postId} = req.params
+        const postId = req.params.postId
+        const {username} = req.user
         const postFound = await Post.findById(postId)
         if(!postFound){
             throw new Error("Post not found")
         }
-        const updatedLike = postFound.likes+1
+        const userFound = await User.findOne({username})
+        if(!userFound){
+            throw new Error("User not found")
+        } 
         const updatedPost = await Post.findByIdAndUpdate(postId,
-            {likes:updatedLike},
+            {$push:{likedUser:userFound._id}},
             {new:true,runValidators:true}
         )
         if(!updatedPost){
             throw new Error("Post not updated")
         }
-        const userFound = await User.findOneAndUpdate({username:req.user.username},{$push:{likedPosts:postId}})
-        if(!userFound){
-            throw new Error("User not Found")
-        }
-        await userFound.likedPosts
         res.json({
             message:"Post updated",
             post:updatedPost
@@ -74,13 +72,17 @@ const postController={
     }),
     undoLike:asyncHandler(async(req,res)=>{
         const {postId} = req.params
+        const {username} = req.user
         const postFound = await Post.findById(postId)
         if(!postFound){
             throw new Error("Post not found")
         }
-        const updatedLike = postFound.likes-1
+        const userFound = await User.findOne({username})
+        if(!userFound){
+            throw new Error("User not found")
+        } 
         const updatedPost = await Post.findByIdAndUpdate(postId,
-            {likes:updatedLike},
+            {$pull:{likedUser:userFound._id}},
             {new:true,runValidators:true}
         )
         if(!updatedPost){
@@ -124,11 +126,6 @@ const postController={
             message:"Post deleted"
         })
     }),
-    allPost:asyncHandler(async(req,res)=>{
-        const allPostList = await Post.find()
-        const sortedPost = allPostList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        res.send(sortedPost)
-    })
         
         
 }

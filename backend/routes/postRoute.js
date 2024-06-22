@@ -7,11 +7,11 @@ const postRouter = express.Router()
 
 
 postRouter.post('/create-post',isAuth,postController.createPost)
-postRouter.get('/allPost',postController.viewPost)
-postRouter.put('/:postId',postController.updatePost)
-postRouter.delete('/:postId',postController.deletePost)
-postRouter.put('/:postId/add-like',postController.addLike)
-postRouter.put('/:postId/undo-like',postController.undoLike)
+postRouter.get('/allPost',isAuth,postController.viewPost)
+postRouter.put('/:postId',isAuth,postController.updatePost)
+postRouter.delete('/:postId',isAuth,postController.deletePost)
+postRouter.put('/:postId/add-like',isAuth,postController.addLike)
+postRouter.put('/:postId/undo-like',isAuth,postController.undoLike)
 
 
 module.exports = postRouter
