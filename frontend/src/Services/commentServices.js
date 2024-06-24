@@ -16,7 +16,10 @@ export const deleteCommentAPI = async({id,commentId}) =>{
     const response = await axios.delete(`${BASE_URL}/post/${id}/${commentId}`)
     return response.data
 }
-export const updateCommentAPI = async({id,commentId}) =>{
-    const response = await axios.put(`${BASE_URL}/post/${id}/${commentId}`)
+export const updateCommentAPI = async({id,commentId,content}) =>{
+    const response = await axios.put(`${BASE_URL}/post/${id}/${commentId}`,{
+        content
+    })
     return response.data
 }
+

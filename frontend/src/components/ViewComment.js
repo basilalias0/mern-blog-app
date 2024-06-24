@@ -4,9 +4,9 @@ import { deleteCommentAPI, viewCommentAPI } from "../Services/commentServices";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AddCommentBar from "./AddCommentBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faXmark,faPencil} from '@fortawesome/free-solid-svg-icons'
+import {faXmark} from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from "react-redux";
-import EditComment from "./EditComment";
+import EditBox from "./EditBox";
 
 function Avatar({ src, alt }) {
   return <img loading="lazy" src={src} alt={alt} className="shrink-0 w-10 aspect-square fill-zinc-300" />;
@@ -35,8 +35,12 @@ function AuthorInfo({ name, date }) {
 
 
 function ViewComment({id,author}) {
-  const userId =useSelector((state)=>state.auth.user.id)
+  const userId =useSelector((state)=>state.auth?.user?.id)
+
+  
   const [allComments,setAllComments] = useState([])
+
+
   const {data} = useQuery({
     queryKey:['fetch-comments'],
     queryFn:()=>viewCommentAPI(id)
@@ -58,15 +62,6 @@ function ViewComment({id,author}) {
       queryClient.invalidateQueries('fetch-comments')
     })
   }
-
-  const handleEditComment = ({id},commentId)=>{
-    <EditComment />
-    console.log("working");
-    //mutateAsync({id,commentId})
-    //.then((data)=>{
-    //  queryClient.invalidateQueries('fetch-comments')
-    //})
-  }
   
   return (
     <div>
@@ -83,10 +78,10 @@ function ViewComment({id,author}) {
         {(author === userId  || comment.commentInfo[0].author === userId  ) ? (<span onClick={()=>deleteComment({id},comment?.commentInfo[0]?._id)} className="close-btn pl-6  float-right cursor-pointer">
         <FontAwesomeIcon icon={faXmark} size="xl" />
           </span> ):""}
-        {(comment.commentInfo[0].author === userId  ) ? (<span onClick={handleEditComment} className="close-btn pl-6  float-right cursor-pointer">
-          
-        <FontAwesomeIcon icon={faPencil} size="lg"/>
+        {(comment.commentInfo[0].author === userId  ) ? (<span className="close-btn pl-6  float-right cursor-pointer">
+        <EditBox postId={id} commentId={comment?.commentInfo[0]?._id} />
           </span> ):""}
+          
         </div>
         
       </header>
@@ -99,6 +94,7 @@ function ViewComment({id,author}) {
 
       )
     })}
+    
     </div>
     
   );

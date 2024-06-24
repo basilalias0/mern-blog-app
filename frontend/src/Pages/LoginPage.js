@@ -59,7 +59,7 @@ function LoginPage() {
             .then((data)=>{
                 dispatch(loginAction(data))
                 Cookies.set("userData",JSON.stringify(data),{expires:1})
-                navigate('/feeds')
+                navigate('/homepage')
             })
             .catch((e)=>console.log(e))
             

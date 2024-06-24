@@ -1,11 +1,32 @@
 import React from 'react';
 import Logo from '../Public/Images/logo.png'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import proPic from '../Public/Images/proPic.png'
 import searchIcon from '../Public/Images/search icon.png'
+import { logoutAPI } from '../Services/userServices';
+import Cookies from 'js-cookie'
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { logoutAction } from '../Redux/AuthSlice';
 
 function Navbar() {
     const profile = useSelector((state)=> state.auth.user)
+    const dispatch = useDispatch()
+    const queryClient = useQueryClient()
+    const navigate = useNavigate()
+
+    const handleLogout=()=>{
+
+      logoutAPI().then((data)=>{
+        Cookies.remove('userData')
+        dispatch(logoutAction())
+        queryClient.clear()
+        navigate('/')
+      })
+      
+
+    }
+
   return (
     <div>
     <header className="flex gap-5 justify-between self-stretch px-20 w-full bg-sky-500 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
@@ -40,12 +61,12 @@ function Navbar() {
         <img src={proPic} alt='Profile Pic'/>
       </div>
           <div className="justify-center  border rounded-lg self-center border-transparent items-start px-4  max-md:pr-5 hover:bg-sky-500">
-            {profile.name}
+            {profile?.name}
           </div>
       </button>
       <div className='flex gap-5 max-md:flex-wrap max-md:max-w-full'>
       <div className="flex shrink gap-0 text-xl text-white basis-auto grow-0 items-center justify-items-center">
-          <button className='border border-black w-32 h-12 rounded-lg hover:bg-white hover:text-sky-700' >
+          <button onClick={handleLogout} className='border border-black w-32 h-12 rounded-lg hover:bg-white hover:text-sky-700' >
           Logout
           </button>
         </div>

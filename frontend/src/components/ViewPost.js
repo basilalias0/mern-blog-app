@@ -21,7 +21,7 @@ function formatDate(dateString) {
   }
 
 function ViewPost() {
-  const userId = useSelector((state)=>state.auth.user.id)
+  const userId = useSelector((state)=>state.auth?.user?.id)
 
 
   const [post,setPost] = useState([])
@@ -133,16 +133,17 @@ function ViewPost() {
         </div>
       </div>
       <div className='max-h-64 overflow-auto snap-mandatory snap-always mb-1'>
-        {isOpen.show && isOpen.id === element._id && <ViewComment author={element.author._id} id={element._id} />}
+        {isOpen.show && isOpen.id === element._id && <ViewComment author={element.author._id} id={element._id}  />}
         
       </div>
     </article>
             )
         })}
 
-      
+    
     </div>
   );
+  
 }
 
 export default ViewPost;

@@ -23,3 +23,7 @@ export const signupAPI = async({username,password,name,email})=>{
     )
     return response.data
 }
+export const logoutAPI = async()=>{
+    const response = await axios.get(`${BASE_URL}/user/logout`)
+    return response.data
+}

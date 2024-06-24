@@ -2,7 +2,6 @@ import * as React from "react";
 import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import ViewPost from "../components/ViewPost";
-import EditComment from "../components/EditComment";
 
 
 function FeedPage() {

@@ -4,5 +4,6 @@ import authReducer from './AuthSlice'
 export default configureStore({
   reducer: {
     auth:authReducer,
+    
   },
 })
