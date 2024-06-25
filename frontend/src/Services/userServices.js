@@ -27,3 +27,6 @@ export const logoutAPI = async()=>{
     const response = await axios.get(`${BASE_URL}/user/logout`)
     return response.data
 }
+export const updateNameAPI = async()=>{
+    const response = await axios.put(`${BASE_URL}/user/`)
+}

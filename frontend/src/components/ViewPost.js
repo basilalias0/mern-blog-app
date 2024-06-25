@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addLikeAPI, undoLikeAPI} from '../Services/postServices';
 import { useSelector } from 'react-redux';
+import PostEditBox from './PostEditBox';
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -88,7 +89,8 @@ function ViewPost() {
             return(
                 <article key={element?._id} className="flex flex-col pb-7  max-w-full bg-sky-50 w-[877px] ">
       <div className="flex flex-col items-end pt-2 pr-6 pb-6 pl-3 bg-sky-100 max-md:pr-5 max-md:max-w-full rounded-md">
-        <div className="flex gap-2.5 self-start">
+        <div className="flex gap-2.5 self-start w-full pl-2 pt-2">
+        
         <div className="shrink-0 my-auto w-12 h-12 rounded-full">
         <img src={proPic} alt='Profile Pic'/>
       </div>
@@ -100,6 +102,9 @@ function ViewPost() {
               Updated at: {formatDate(element?.createdAt)}
             </div>
           </div>
+          
+          { (element?.author?._id === userId) && <PostEditBox/> }
+          
         </div>
         <div className="justify-center items-start px-2.5 pt-5 pb-1 max-w-full text-xl font-bold bg-sky-100 text-stone-900 w-[800px] max-md:pr-5">
           {element?.title}

@@ -6,7 +6,7 @@ import { updateCommentAPI } from '../Services/commentServices';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-function EditBox({commentId,postId}) {
+function CommentEditBox({commentId,postId}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -98,4 +98,4 @@ function EditBox({commentId,postId}) {
   );
 }
 
-export default EditBox;
+export default CommentEditBox;

@@ -23,8 +23,9 @@ function Navbar() {
         queryClient.clear()
         navigate('/')
       })
-      
-
+    }
+    const handleLinkToProfile = () =>{
+      navigate('/my-profile')
     }
 
   return (
@@ -56,7 +57,7 @@ function Navbar() {
           </button>
         </form>
       </div>
-      <button className='flex  pl-2  max-md:flex-wrap max-md:max-w-full hover:bg-sky-500'>
+      <button onClick={handleLinkToProfile} className='flex  pl-2  max-md:flex-wrap max-md:max-w-full hover:bg-sky-500'>
       <div className="shrink-0 my-auto w-12 h-12 rounded-full">
         <img src={proPic} alt='Profile Pic'/>
       </div>

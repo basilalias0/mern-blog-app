@@ -6,7 +6,8 @@ import AddCommentBar from "./AddCommentBar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faXmark} from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from "react-redux";
-import EditBox from "./EditBox";
+import CommentEditBox from "./CommentEditBox";
+
 
 function Avatar({ src, alt }) {
   return <img loading="lazy" src={src} alt={alt} className="shrink-0 w-10 aspect-square fill-zinc-300" />;
@@ -79,7 +80,7 @@ function ViewComment({id,author}) {
         <FontAwesomeIcon icon={faXmark} size="xl" />
           </span> ):""}
         {(comment.commentInfo[0].author === userId  ) ? (<span className="close-btn pl-6  float-right cursor-pointer">
-        <EditBox postId={id} commentId={comment?.commentInfo[0]?._id} />
+        <CommentEditBox postId={id} commentId={comment?.commentInfo[0]?._id} />
           </span> ):""}
           
         </div>
