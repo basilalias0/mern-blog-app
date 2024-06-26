@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { updateNameAPI } from '../Services/userServices';
+import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux';
+import { userUpdateAction } from '../Redux/AuthSlice';
+import Alert from '@mui/material/Alert';
 
 function UpdateNameBox({show,setShow}) {
+
+    const dispatch = useDispatch()
+
     const [isErrorActive,setIsErrorActive]=useState(true)
-    
 
   const closeBtn = ()=>setShow(false)
   const closeErrorBtn=()=>{
@@ -16,8 +23,8 @@ function UpdateNameBox({show,setShow}) {
   const queryClient = useQueryClient()
 
   const{mutateAsync,isError,error,isPending}= useMutation({
-    mutationFn:"",
-    mutationKey:['']
+    mutationFn:updateNameAPI,
+    mutationKey:['update-name']
   })
 
   const EditNameValidationSchema = Yup.object({
@@ -33,7 +40,9 @@ function UpdateNameBox({show,setShow}) {
       mutateAsync(values)
       .then((data)=>
         {
-          queryClient.invalidateQueries('')
+            queryClient.invalidateQueries('fetch-user-data')
+          dispatch(userUpdateAction(data))
+          Cookies.set("userData",JSON.stringify(data),{expires:1})
           setShow(false)
           resetForm()
         })
@@ -54,6 +63,8 @@ function UpdateNameBox({show,setShow}) {
       >
         <form onSubmit={formik.handleSubmit} className="flex  flex-col px-9 p rounded-md py-3  max-w-full bg-sky-300 w-[640px] max-md:px-5 max-md:mt-10">
       <h2 className="text-xl mb-1 font-bold max-md:max-w-full">Want to Update your Name?</h2>
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+          {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
 
       <input
         id="nameInput"

@@ -25,3 +25,10 @@ export const undoLikeAPI = async(postId)=>{
     const response = await axios.put(`${BASE_URL}/post/${postId}/undo-like`)
     return response.data
 }
+export const updatePostAPI = async({title,postId,content})=>{
+    const response = await axios.put(`${BASE_URL}/post/${postId}`,{
+        title,
+        content
+    }) 
+    return response.data
+}

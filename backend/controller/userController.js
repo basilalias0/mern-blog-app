@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
 const Post = require('../model/postModel/postModel')
+const mongoose = require('mongoose')
 
 
 const UserController = {
@@ -105,31 +106,45 @@ const UserController = {
         })
     }),
     userDetails:asyncHandler(async(req,res)=>{
-        const {id} = req.params
-        const userFound = await User.findById(id)
+        const {username} = req.params
+        const userFound = await User.findOne({username})
         if(!userFound){
             throw new Error("User not found ")
         }
-        const posts = await Post.find({author:id})
+        const userDetails = await User.aggregate([
+            {
+              $match: {
+                _id: new mongoose.Types.ObjectId(userFound._id), // Convert string ID to ObjectId
+              }},
+              {$lookup: {
+                from: 'posts',
+                localField: 'posts',
+                foreignField: '_id',
+                as: 'userPost'
+              }}
+          ]);
+        
+          const userPost = userDetails[0].userPost
+        
+        const sortedPosts = userPost.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         
         res.json({
-            name:userFound.name,
-            username:userFound.username,
-            posts,
-            profileImage:userFound.profileImage,
-            coverImage:userFound.coverImage,
-
+            name:userDetails[0].name,
+            username:userDetails[0].username,
+            email:userDetails[0].email,
+            userPost:sortedPosts
         })
 
     }),
     updateName: asyncHandler(async(req,res)=>{
         const {name} = req.body
         const {username} = req.user
-        const userFound = await User.findOne({username})
+        
         const updatedUser = await User.updateOne({username},{name})
         if(!updatedUser){
             throw new Error("Name not updated")
         }
+        const userFound = await User.findOne({username})
             const payload={
                 username
             }
@@ -144,12 +159,12 @@ const UserController = {
     
             })
             res.json({
-                name,
-                username,
+                name:userFound.name,
+                username:userFound.username,
                 email:userFound.email,
-                token
+                token,
+                id:userFound._id
             })
-        
         
 
         
@@ -182,11 +197,12 @@ const UserController = {
             })
 
             res.json({
-                username,
-                token,
+                name:userFound.name,
+                username:userFound.username,
                 email:userFound.email,
-                name:userFound.name
-               })
+                token,
+                id:userFound._id
+            })
         
     }),
     updatePassword:asyncHandler(async(req,res)=>{
@@ -196,6 +212,9 @@ const UserController = {
         }
         const username = req.user.username
         const userFound = await User.findOne({username})
+        if(!userFound){
+            throw new Error("User Not Found")
+        }
         const passwordMatch = await bcrypt.compare(oldPassword,userFound.password)
         if(!passwordMatch){
             throw new Error("Old password incorrect")
@@ -209,6 +228,12 @@ const UserController = {
             username
         }
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+        res.cookie('token',token,{
+            maxAge:1*24*60*1000,
+            httpOnly:true,
+            secure:false,
+            sameSite:true
+        })
         res.json({
             username,
             token,

@@ -22,7 +22,6 @@ const postController={
         if(!userDetailUpdate){
             throw new Error("userDetailUpdate didn't updated")
         }
-        console.log(userDetailUpdate);
         res.json({
             message:"post created successfully"
         })

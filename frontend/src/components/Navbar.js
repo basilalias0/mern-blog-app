@@ -25,18 +25,19 @@ function Navbar() {
       })
     }
     const handleLinkToProfile = () =>{
-      navigate('/my-profile')
+      navigate(`/${profile?.username}`)
     }
 
   return (
     <div>
     <header className="flex gap-5 justify-between self-stretch px-20 w-full bg-sky-500 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-    
+    <button onClick={()=>navigate('/homepage')}>
       <div className=" flex align-center 
        justify-center  bg-sky-500">
       <img className=' w-16 h-18' src={Logo} alt='Logo'/>
         <div className='text-4xl font-bold text-center text-white self-center justify-self-center'> BLOG APP </div>
       </div>
+      </button>
       <div className='flex gap-5 w-1/2 max-md:flex-wrap max-md:max-w-full'>
       <form className="flex flex-auto gap-5 justify-between pl-7 my-auto text-base bg-white rounded-3xl text-neutral-500 max-md:flex-wrap max-md:max-w-full">
           <label htmlFor="searchInput" className="sr-only">Search here!</label>

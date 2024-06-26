@@ -70,7 +70,7 @@ function ViewComment({id,author}) {
     {allComments?.map((comment)=>{
       return(
         
-        <section key={comment?.commentInfo[0]?._id}  className="flex flex-col mt-2 py-1 pr-16 pl-5 bg-sky-100 max-w-[877px] max-md:pr-5">
+        <section key={comment?.commentInfo[0]?._id}  className="flex flex-col mt-2 py-1 pr-16 pl-5 bg-sky-100 rounded max-w-[877px] max-md:pr-5">
 
       <header className="flex gap-2 w-full mt-2 items-start self-start">
         <Avatar src={proPic} alt="Author's Avatar" />

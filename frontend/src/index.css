@@ -1,7 +1,8 @@
 body{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: #f0f9ff;
-    overflow: scroll;
+    
+background: linear-gradient(275deg, rgba(3,105,161,1) 0%, rgba(0,153,255,1) 45%, rgba(0,212,255,1) 91%);
+    overflow-y: scroll;
 }
 
 ::-webkit-scrollbar {

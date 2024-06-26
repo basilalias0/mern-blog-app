@@ -27,6 +27,28 @@ export const logoutAPI = async()=>{
     const response = await axios.get(`${BASE_URL}/user/logout`)
     return response.data
 }
-export const updateNameAPI = async()=>{
-    const response = await axios.put(`${BASE_URL}/user/`)
+export const updateNameAPI = async({name})=>{
+    const response = await axios.put(`${BASE_URL}/user/update-name`,{
+        name
+    })
+    return response.data
+}
+
+export const updateUsernameAPI = async({username})=>{
+    const response = await axios.put(`${BASE_URL}/user/update-username`,{
+        username
+    })
+    return response.data
+}
+export const updatePasswordAPI = async({oldPassword,newPassword})=>{
+    const response = await axios.put(`${BASE_URL}/user/update-password`,{
+        oldPassword,
+        newPassword
+    })
+    return response.data
+}
+
+export const UserDataAPI = async(username)=>{
+    const response = await axios.get(`${BASE_URL}/user/${username}`)
+    return response.data
 }

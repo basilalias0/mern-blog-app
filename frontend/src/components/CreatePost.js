@@ -47,8 +47,8 @@ function CreatePost() {
     })
 
   return (
-    <div className="flex flex-col items-center pb-10 bg-sky-50 ">
-        <form onSubmit={formik.handleSubmit} className="flex flex-col px-4 py-3 mt-2.5 max-w-full text-base bg-sky-50 rounded-md text-stone-900 w-[877px] shadow-md">
+    <div className="flex flex-col items-center pb-10  ">
+        <form onSubmit={formik.handleSubmit} className="flex flex-col px-4 py-3 mt-2.5 max-w-full text-base bg-sky-200 rounded-md text-stone-900 w-[877px] shadow-md">
         <header className="justify-center items-start  bg-white rounded-md max-md:pr-5 max-md:max-w-full">
           <input
           placeholder='Share your thoughts here!!'

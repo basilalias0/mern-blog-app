@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createCommentAPI } from '../Services/commentServices';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -49,7 +50,9 @@ const AddCommentBar = ({id}) => {
         });
 
   return (
-    <section className="flex flex-col px-2.5 py-2 text-base bg-sky-100 max-w-[877px] text-stone-900">
+    <section className="flex flex-col px-2.5 py-2 shadow-md text-base bg-sky-100 max-w-[877px] text-stone-900">
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+      {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
       
       <form onSubmit={formik.handleSubmit} className="flex gap-5 max-md:flex-wrap max-md:mr-2">
 

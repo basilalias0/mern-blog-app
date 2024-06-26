@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateCommentAPI } from '../Services/commentServices';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Alert from '@mui/material/Alert';
 
 function CommentEditBox({commentId,postId}) {
   const [show, setShow] = useState(false);
@@ -57,13 +58,17 @@ function CommentEditBox({commentId,postId}) {
           show ? 'block' : 'hidden'
         } bg-gray-900 bg-opacity-50 transition-all ease-in-out duration-300`}
       >
+        
         <div
         className={`fixed inset-0 z-50 h-screen  w-screen flex items-center justify-center overflow-y-auto px-4 py-6 sm:px-0 sm:py-8 ${
           show ? 'block' : 'hidden'
         } bg-gray-900 bg-opacity-50 transition-all  ease-in-out duration-300`}
       >
+        
         <form onSubmit={formik.handleSubmit} className="flex  flex-col px-9 p rounded-md py-3  max-w-full bg-sky-300 w-[640px] max-md:px-5 max-md:mt-10">
       <h2 className="text-xl mb-1 font-bold max-md:max-w-full">Want to Update your Comment?</h2>
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+        {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
       <textarea
         id="commentInput"
         name='content'

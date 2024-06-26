@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import CommentButton from './CommentButton';
 import ViewComment from './ViewComment';
 import proPic from '../Public/Images/proPic.png'
-import Alert from '@mui/material/Alert';
-import { viewPostAPI } from '../Services/postServices';
 import { faHeart as fhs } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as fhr } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addLikeAPI, undoLikeAPI} from '../Services/postServices';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { HomepageLoadingScreen } from './LoadingScreen';
+import PostEditBox from './PostEditBox';
+
+
+
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -22,23 +22,18 @@ function formatDate(dateString) {
     return `${day} ${month} ${year}`;
   }
 
-function ViewPost() {
+function UserPost({data,authorName}) {
   const userId = useSelector((state)=>state.auth?.user?.id)
 
 
-  const [post,setPost] = useState([])
+  const [post,setPost] = useState(data)
 
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
 
-  const {data,isError,isPending,error}=useQuery({
-    queryKey:['fetch-all-post'],
-    queryFn:viewPostAPI
-  })
+  
   useEffect(()=>{
     setPost(data)
   },[data])
-  
 
     const likeMutation = useMutation({
         mutationFn:addLikeAPI,
@@ -82,21 +77,14 @@ function ViewPost() {
       setIsOpen((prev)=>({show:!prev.show,id}))
     }
 
-    const handleUserNav = (element)=>{
-      console.log("working");
-      console.log(element);
-      navigate(`/${element?.username}`)
-      
-    }
   return (
-    <div className="flex flex-col items-center ">
-    {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
-    {isPending && <HomepageLoadingScreen/> }
+    <div className="flex flex-col items-center  ">
+   
 
         {post?.map((element)=>{
             return(
                 <article key={element?._id} className="flex flex-col pb-7  max-w-full   w-[877px] ">
-      <div className="flex flex-col items-end pt-2 pr-6 pb-6 pl-3 bg-sky-100 max-md:pr-5 max-md:max-w-full shadow-md rounded-t-md ">
+      <div className="flex flex-col items-end pt-2 pr-6 pb-6 pl-3 bg-sky-100 max-md:pr-5 max-md:max-w-full rounded-t-md shadow-md ">
         <div className="flex gap-2.5 self-start w-full pl-2 pt-2">
         
         <div className="shrink-0 my-auto w-12 h-12 rounded-full">
@@ -104,12 +92,14 @@ function ViewPost() {
       </div>
           <div className="flex flex-col my-auto">
             <div className="text-base font-bold text-stone-900">
-              <button onClick={()=>handleUserNav(element?.author)}>{element?.author?.name}</button>
+              <button>{authorName}</button>
             </div>
             <div className=" text-base text-neutral-500">
               Updated at: {formatDate(element?.createdAt)}
             </div>
           </div>
+          
+          { (element?.author === userId) && <PostEditBox postId={element?._id}/> }
           
         </div>
         <div className="justify-center items-start px-2.5 pt-5 pb-1 max-w-full text-xl font-bold bg-sky-100 text-stone-900 w-[800px] max-md:pr-5">
@@ -157,4 +147,4 @@ function ViewPost() {
   
 }
 
-export default ViewPost;
+export default UserPost;

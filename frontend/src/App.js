@@ -3,6 +3,7 @@ import LoginPage from './Pages/LoginPage';
 import SignupPage from './Pages/SignupPage';
 import Feedpage from './Pages/Feedpage';
 import ProfilePage from './Pages/ProfilePage';
+import ErrorPage from './Pages/ErrorPage';
 
 
 
@@ -13,7 +14,8 @@ function App() {
         <Route path='/' element={<LoginPage/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
         <Route path='/homepage' element={<Feedpage/>}/>
-        <Route path='/my-profile' element={<ProfilePage/>}/>
+        <Route path='/:id' element={<ProfilePage/>}/>
+        <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </Router>
     

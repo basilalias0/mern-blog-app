@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Alert from '@mui/material/Alert';
+import { updatePasswordAPI } from '../Services/userServices';
 
 function UpdatePasswordBox({show,setShow}) {
     const [isOldPasswordErrorActive,setIsOldPasswordErrorActive]=useState(true)
@@ -26,8 +27,8 @@ function UpdatePasswordBox({show,setShow}) {
   const queryClient = useQueryClient()
 
   const{mutateAsync,isError,error,isPending}= useMutation({
-    mutationFn:"",
-    mutationKey:['']
+    mutationFn:updatePasswordAPI,
+    mutationKey:['update-password']
   })
 
   const EditPasswordValidationSchema = Yup.object({
@@ -46,7 +47,6 @@ function UpdatePasswordBox({show,setShow}) {
     initialValues:{
       oldPassword:'',
       newPassword:'',
-      confirmPassword:''
     },
     validationSchema:EditPasswordValidationSchema,
     onSubmit:(values,{resetForm})=>{
@@ -72,12 +72,12 @@ function UpdatePasswordBox({show,setShow}) {
         <div
         className={`fixed inset-0 z-50 h-screen  w-screen flex items-center justify-center overflow-y-auto px-4 py-6 sm:px-0 sm:py-8  bg-gray-900 bg-opacity-50 transition-all  ease-in-out duration-300`}
       >
-        {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase"}} key={"info"} variant={'info'}> Loading... </Alert>}
-        {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase"}} key={"danger"} variant={'danger'}> {error?.response?.data?.message} !!! </Alert>}
 
 
       <form onSubmit={formik.handleSubmit} className="flex  flex-col px-9 p rounded-md py-3  max-w-full bg-sky-300 w-[640px] max-md:px-5 max-md:mt-10">
       <h2 className="text-xl mb-1 font-bold max-md:max-w-full">Want to Update your Password?</h2>
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+          {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
 
       <input
         type="password"

@@ -17,10 +17,13 @@ export const AuthSlice= createSlice({
         }),
         logoutAction:((state,action)=>{
             state.user = null
+        }),
+        userUpdateAction:((state,action)=>{
+            state.user = action.payload
         })
     }
 })
 
-export const {loginAction,signupAction,logoutAction} = AuthSlice.actions
+export const {loginAction,signupAction,logoutAction, userUpdateAction} = AuthSlice.actions
 
 export default AuthSlice.reducer

@@ -4,8 +4,10 @@ import {faPencil} from '@fortawesome/free-solid-svg-icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Alert from '@mui/material/Alert';
+import { updatePostAPI } from '../Services/postServices';
 
-function PostEditBox({commentId,postId}) {
+function PostEditBox({postId}) {
   const [show, setShow] = useState(false);
   const [formData,setFormData] = useState({
     titleInput:'',
@@ -30,7 +32,7 @@ function PostEditBox({commentId,postId}) {
   const queryClient = useQueryClient()
 
   const{mutateAsync,isError,error,isPending}= useMutation({
-    mutationFn:"",
+    mutationFn:updatePostAPI,
     mutationKey:['update-post']
   })
 
@@ -38,11 +40,9 @@ function PostEditBox({commentId,postId}) {
     title:Yup.string().min(3,"Need At least Three Character").required("To Update, Title Required"),
     content:Yup.string().min(5,"Need At least Five Character").required("To Update, Content Required")
   })
-
   const formik = useFormik({
     initialValues:{
       postId,
-      commentId,
       title:'',
       content:''
     },
@@ -51,7 +51,7 @@ function PostEditBox({commentId,postId}) {
       mutateAsync(values)
       .then((data)=>
         {
-          queryClient.invalidateQueries('')
+          queryClient.invalidateQueries('fetch-all-post','fetch-user-data')
           setShow(false)
           resetForm()
         })
@@ -76,7 +76,8 @@ function PostEditBox({commentId,postId}) {
       >
         <form onSubmit={formik.handleSubmit} className="flex  flex-col px-9 p rounded-md py-3  max-w-full bg-sky-300 w-[640px] max-md:px-5 max-md:mt-10">
       <h2 className="text-xl mb-1 font-bold max-md:max-w-full">Want to Update your Blog?</h2>
-
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+      {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
       <textarea
         id="titleInput"
         name='title'

@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { userUpdateAction } from '../Redux/AuthSlice';
+import Cookies from 'js-cookie'
+import { updateUsernameAPI } from '../Services/userServices';
+import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 function UpdateUsernameBox({show,setShow}) {
+
+  const dispatch = useDispatch()
+
     const [isErrorActive,setIsErrorActive]=useState(true)
     
 
@@ -13,11 +22,11 @@ function UpdateUsernameBox({show,setShow}) {
   }
   
 
-  const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const{mutateAsync,isError,error,isPending}= useMutation({
-    mutationFn:"",
-    mutationKey:['']
+    mutationFn:updateUsernameAPI,
+    mutationKey:['update-username']
   })
 
   const EditUsernameValidationSchema = Yup.object({
@@ -33,9 +42,12 @@ function UpdateUsernameBox({show,setShow}) {
       mutateAsync(values)
       .then((data)=>
         {
-          queryClient.invalidateQueries('')
+          
+          dispatch(userUpdateAction(data))
+          Cookies.set("userData",JSON.stringify(data),{expires:1})
           setShow(false)
           resetForm()
+          navigate(`/${data?.username}`)
         })
       .catch((e)=>console.log(e))
     }
@@ -54,6 +66,8 @@ function UpdateUsernameBox({show,setShow}) {
       >
         <form onSubmit={formik.handleSubmit} className="flex  flex-col px-9 p rounded-md py-3  max-w-full bg-sky-300 w-[640px] max-md:px-5 max-md:mt-10">
       <h2 className="text-xl mb-1 font-bold max-md:max-w-full">Want to Update your Username?</h2>
+      {isError && <Alert style={{fontWeight:"bold",textTransform:"uppercase", marginTop:"10px"}} severity="error"> {error?.response?.data?.message} !!! </Alert>}
+          {isPending && <Alert style={{fontWeight:"bold",textTransform:"uppercase",marginTop:"10px"}} severity="info"> Loading... </Alert>}
 
       <input
         id="usernameInput"
