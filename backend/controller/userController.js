@@ -5,6 +5,9 @@ const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
 const Post = require('../model/postModel/postModel')
 const mongoose = require('mongoose')
+const cloudinary = require('cloudinary').v2
+require('dotenv').config()
+
 
 
 const UserController = {
@@ -84,7 +87,8 @@ const UserController = {
         email:userFound.email,
         username,
         token,
-        id:userFound._id
+        id:userFound._id,
+        profileImage:userFound.profileImage
          })
                 
     
@@ -101,7 +105,6 @@ const UserController = {
             posts:userFound.posts,
             id:userFound._id,
             profileImage:userFound.profileImage,
-            coverImage:userFound.coverImage,
 
         })
     }),
@@ -132,6 +135,7 @@ const UserController = {
             name:userDetails[0].name,
             username:userDetails[0].username,
             email:userDetails[0].email,
+            profileImage:userDetails[0].profileImage,
             userPost:sortedPosts
         })
 
@@ -242,10 +246,49 @@ const UserController = {
             })
         
     }),
+    allUsers:asyncHandler(async(req,res)=>{
+        const allUserData = await User.find()
+        if(!allUserData){
+            throw new Error("No data of Users Found")
+        }
+        const updatedData = allUserData.map((element)=>{
+            return(
+                {
+                    id:element._id,
+                    name:element.name,
+                    username:element.username,
+                    profileImage:element.profileImage
+                }
+            )
+        })
+        res.json(updatedData)
+    }),
+    uploadProfilePhoto:asyncHandler(async(req,res)=>{
+        const {username} = req.user
+        console.log("Hi data",req.file);
+        const userFound = await User.findOne({username})
+        if(!userFound){
+            throw new Error("User Not Found")
+        }
+        const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+            cloud_name: 'dh8crye03', 
+            api_key: '719359753684953', 
+            api_secret: process.env.CLOUDINARY_SECRET_KEY,
+            preset:'blog-app-v4',
+          });
+        const updatedData = await User.findOneAndUpdate({username},
+            {profileImage:uploadResponse.secure_url}
+        )
+       
+        res.send(updatedData)
+      
+    }),
+
     logoutUser:asyncHandler(async(req,res)=>{
         res.clearCookie('token')
         res.json({ message: 'Logged out successfully' });
     }),
+    
 
 
 }

@@ -81,15 +81,26 @@ const commentController = {
     }),
     deleteComment:asyncHandler(async(req,res)=>{
         const {commentId,postId} = req.params
+        console.log(commentId);
+        const {username} = req.user
         const deletedComment = await Comment.findByIdAndDelete(commentId)
         if(!deletedComment){
             throw new Error("Comment delete Failed")
         }
         const pullCommentFromPost = await Post.findByIdAndUpdate(postId,
             {$pull:{comments:commentId}},
-            {new:true,runValidators:true}
-            
+            {new:true,runValidators:true}  
         )
+        if(!pullCommentFromPost){
+          throw new Error("Error happened from PullCommentFromPost")
+        }
+        const pullCommentFromUser = await User.findOneAndUpdate({username},
+          {$pull:{comments:commentId}},
+          {new:true,runValidators:true}  
+      )
+      if(!pullCommentFromUser){
+        throw new Error("Error happened from PullCommentFromUser")
+      }
         res.json({
             message:"Comment successfully deleted"
         })

@@ -3,7 +3,7 @@ import '../Public/Stylesheet.css'
 import Logo from '../Public/Images/logo.png'
 import AuthPageAside from "../components/AuthPageAside";
 import { useDispatch } from "react-redux";
-import {loginAction, signupAction } from "../Redux/AuthSlice";
+import {loginAction} from "../Redux/AuthSlice";
 import Alert from '@mui/material/Alert';
 import { useMutation } from "@tanstack/react-query";
 import {Link, useNavigate} from 'react-router-dom'

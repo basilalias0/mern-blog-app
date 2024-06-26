@@ -28,9 +28,6 @@ const userSchema = new mongoose.Schema({
       profileImage:{
         type:String
       },
-      coverImage:{
-        type:String
-      },
       posts:[{
         type:mongoose.Schema.Types.ObjectId
       }],

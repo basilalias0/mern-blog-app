@@ -83,8 +83,6 @@ function ViewPost() {
     }
 
     const handleUserNav = (element)=>{
-      console.log("working");
-      console.log(element);
       navigate(`/${element?.username}`)
       
     }
@@ -100,7 +98,7 @@ function ViewPost() {
         <div className="flex gap-2.5 self-start w-full pl-2 pt-2">
         
         <div className="shrink-0 my-auto w-12 h-12 rounded-full">
-        <img src={proPic} alt='Profile Pic'/>
+        <img src={element?.author?.profileImage||proPic} alt='Profile Pic' className='shrink-0 mx-auto rounded-full bg-zinc-300'/>
       </div>
           <div className="flex flex-col my-auto">
             <div className="text-base font-bold text-stone-900">

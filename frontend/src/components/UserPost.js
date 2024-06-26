@@ -22,7 +22,7 @@ function formatDate(dateString) {
     return `${day} ${month} ${year}`;
   }
 
-function UserPost({data,authorName}) {
+function UserPost({data,authorName,profileImage}) {
   const userId = useSelector((state)=>state.auth?.user?.id)
 
 
@@ -54,7 +54,6 @@ function UserPost({data,authorName}) {
           }
         })
         setPost(newData)
-        queryClient.invalidateQueries()
       }).catch((e)=>console.log(e))
     }
     const handleUnLike =(id)=>{
@@ -88,7 +87,7 @@ function UserPost({data,authorName}) {
         <div className="flex gap-2.5 self-start w-full pl-2 pt-2">
         
         <div className="shrink-0 my-auto w-12 h-12 rounded-full">
-        <img src={proPic} alt='Profile Pic'/>
+        <img src={profileImage||proPic} alt='Profile Pic' className='shrink-0 mx-auto rounded-full bg-zinc-300'/>
       </div>
           <div className="flex flex-col my-auto">
             <div className="text-base font-bold text-stone-900">

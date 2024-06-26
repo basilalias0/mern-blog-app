@@ -52,3 +52,13 @@ export const UserDataAPI = async(username)=>{
     const response = await axios.get(`${BASE_URL}/user/${username}`)
     return response.data
 }
+export const allUserAPI = async()=>{
+    const response = await axios.get(`${BASE_URL}/user/all-user-data`)
+    return response.data
+}
+export const updateProfileImgAPI = async({formData})=>{
+    const response = await axios.put(`${BASE_URL}/user/profile-picture`,
+        formData
+    )
+    return response.data
+}

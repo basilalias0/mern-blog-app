@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import CommentEditBox from "./CommentEditBox";
 
 
-function Avatar({ src, alt }) {
-  return <img loading="lazy" src={src} alt={alt} className="shrink-0 w-10 aspect-square fill-zinc-300" />;
+function Avatar({ src, alt, profileImage }) {
+  return <img loading="lazy" src={profileImage||src} alt={alt} className="shrink-0 w-10 rounded-full aspect-square fill-zinc-300" />;
 }
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -63,7 +63,6 @@ function ViewComment({id,author}) {
       queryClient.invalidateQueries('fetch-comments')
     })
   }
-  
   return (
     <div>
     <AddCommentBar id ={id}/>
@@ -73,7 +72,7 @@ function ViewComment({id,author}) {
         <section key={comment?.commentInfo[0]?._id}  className="flex flex-col mt-2 py-1 pr-16 pl-5 bg-sky-100 rounded max-w-[877px] max-md:pr-5">
 
       <header className="flex gap-2 w-full mt-2 items-start self-start">
-        <Avatar src={proPic} alt="Author's Avatar" />
+        <Avatar src={proPic} profileImage={comment?.authorInfo?.profileImage} alt="Author's Avatar" />
         <AuthorInfo name={comment.authorInfo.name} date={comment.commentInfo[0].createdAt} />
         <div>
         {(author === userId  || comment.commentInfo[0].author === userId  ) ? (<span onClick={()=>deleteComment({id},comment?.commentInfo[0]?._id)} className="close-btn pl-6  float-right cursor-pointer">

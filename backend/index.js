@@ -7,7 +7,7 @@ const errorHandler = require('./middleware/errorhandle');
 const postRouter = require('./routes/postRoute');
 const userRouter = require('./routes/userRoute');
 const commentRouter = require('./routes/commentRoute');
-const postController = require('./controller/postController');
+const methodOverride = require('method-override')
 const cors = require('cors');
 const DBConnectionString = process.env.MONGO_CONNECTION_STRING
 
@@ -33,7 +33,7 @@ const corsOption ={
     credentials: true
 }
 app.use(cors(corsOption))
-
+app.use(methodOverride("_method"))
 
 
 app.use('/api/v1/user',userRouter)

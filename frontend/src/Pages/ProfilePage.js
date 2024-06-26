@@ -4,7 +4,7 @@ import UserProfile from '../components/UserProfile';
 
 function ProfilePage() {
   return (
-    <div>
+    <div className="bg-transparent">
       <Navbar/>
       <UserProfile/>
     </div>
