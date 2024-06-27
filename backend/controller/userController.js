@@ -163,10 +163,11 @@ const UserController = {
             })
             res.json({
                 name:userFound.name,
-                username:userFound.username,
                 email:userFound.email,
+                username:userFound.username,
                 token,
-                id:userFound._id
+                id:userFound._id,
+                profileImage:userFound.profileImage
             })
         
 
@@ -201,10 +202,11 @@ const UserController = {
 
             res.json({
                 name:userFound.name,
-                username:userFound.username,
                 email:userFound.email,
+                username:userFound.username,
                 token,
-                id:userFound._id
+                id:userFound._id,
+                profileImage:userFound.profileImage
             })
         
     }),
@@ -238,10 +240,12 @@ const UserController = {
             sameSite:true
         })
         res.json({
+            name:userFound.name,
+            email:userFound.email,
             username,
             token,
-            email:userFound.email,
-            name:userFound.name
+            id:userFound._id,
+            profileImage:userFound.profileImage
             })
         
     }),
@@ -264,7 +268,6 @@ const UserController = {
     }),
     uploadProfilePhoto:asyncHandler(async(req,res)=>{
         const {username} = req.user
-        console.log("Hi data",req.file);
         const userFound = await User.findOne({username})
         if(!userFound){
             throw new Error("User Not Found")
