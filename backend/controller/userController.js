@@ -41,9 +41,6 @@ const UserController = {
 
                 res.cookie('token',token,{
                     maxAge:1*24*60*60*1000,
-                    secure:true,
-                    sameSite:'strict',
-
                 })
                 res.json({
                     name,
@@ -76,9 +73,6 @@ const UserController = {
 
         res.cookie('token',token,{
         maxAge:1*24*60*60*1000,
-        secure:true,
-        sameSite:'strict',
-
          })
         res.json({
         name:userFound.name,
