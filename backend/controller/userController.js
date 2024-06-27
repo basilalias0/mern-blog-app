@@ -43,7 +43,7 @@ const UserController = {
                     maxAge:1*24*60*60*1000,
                     secure:false,
                     sameSite:'strict',
-                    httpOnly:true,
+                    httpsOnly:true,
 
                 })
                 res.json({
@@ -79,7 +79,7 @@ const UserController = {
         maxAge:1*24*60*60*1000,
         secure:false,
         sameSite:'strict',
-        httpOnly:true,
+        httpsOnly:true,
 
          })
         res.json({

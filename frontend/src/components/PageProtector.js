@@ -6,7 +6,6 @@ import { getUserData } from '../Utils/cookieHandler';
 const PageProtector = ({children}) => {
 
     const isUser =getUserData()
-    console.log(isUser);
 
   if(isUser){
     return children

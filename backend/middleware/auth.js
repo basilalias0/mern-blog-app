@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const isAuth = ((req,res,next)=>{
     const token = req.cookies.token
-    
+    console.log(req.cookies);
 
     if(!token){
         throw new Error("Token not found")
