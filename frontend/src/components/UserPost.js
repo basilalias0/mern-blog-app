@@ -6,9 +6,10 @@ import { faHeart as fhs } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as fhr } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addLikeAPI, undoLikeAPI} from '../Services/postServices';
+import { addLikeAPI, deletePostAPI, undoLikeAPI} from '../Services/postServices';
 import { useSelector } from 'react-redux';
 import PostEditBox from './PostEditBox';
+import {faXmark} from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -43,6 +44,10 @@ function UserPost({data,authorName,profileImage}) {
         mutationFn:undoLikeAPI,
         mutationKey:['undo-like']
     })
+    const deletePostMutation = useMutation({
+      mutationFn:deletePostAPI,
+      mutationKey:['delete-post']
+    })
 
     const handleAddLike =(id)=>{
       likeMutation.mutateAsync(id).then((response)=>{
@@ -76,6 +81,13 @@ function UserPost({data,authorName,profileImage}) {
       setIsOpen((prev)=>({show:!prev.show,id}))
     }
 
+    const handleDeletePost = (id)=>{
+      deletePostMutation.mutateAsync(id)
+      .then((data)=>{
+        queryClient.invalidateQueries('fetch-user-data')
+      })
+    }
+
   return (
     <div className="flex flex-col items-center  ">
    
@@ -87,7 +99,7 @@ function UserPost({data,authorName,profileImage}) {
         <div className="flex gap-2.5 self-start w-full pl-2 pt-2">
         
         <div className="shrink-0 my-auto w-12 h-12 rounded-full">
-        <img src={profileImage||proPic} alt='Profile Pic' className='shrink-0 mx-auto rounded-full bg-zinc-300'/>
+        <img src={profileImage||proPic} alt='Profile Pic' className='shrink-0 mx-auto rounded-full w-12 h-12  bg-zinc-300'/>
       </div>
           <div className="flex flex-col my-auto">
             <div className="text-base font-bold text-stone-900">
@@ -99,6 +111,9 @@ function UserPost({data,authorName,profileImage}) {
           </div>
           
           { (element?.author === userId) && <PostEditBox postId={element?._id}/> }
+          {(element?.author === userId ) ? (<span onClick={()=>handleDeletePost(element?._id)} className=" ">
+        <FontAwesomeIcon icon={faXmark} className='ml-4 mt-3 cursor-pointer' size="xl" />
+          </span> ):""}
           
         </div>
         <div className="justify-center items-start px-2.5 pt-5 pb-1 max-w-full text-xl font-bold bg-sky-100 text-stone-900 w-[800px] max-md:pr-5">

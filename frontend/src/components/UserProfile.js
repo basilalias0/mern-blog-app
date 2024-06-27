@@ -26,7 +26,7 @@ function Avatar({ size = 162,user }) {
 function UserProfile() {
   
   const {id} = useParams() 
-  const userUsername = useSelector((state)=>state.auth.user.username)
+  const userUsername = useSelector((state)=>state.auth?.user?.username)
 
 
   const [isCreateOpen,setIsCreateOpen] =useState(false)

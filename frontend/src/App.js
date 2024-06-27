@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import LoginPage from './Pages/LoginPage';
 import SignupPage from './Pages/SignupPage';
-import Feedpage from './Pages/Feedpage';
+import FeedPage from './Pages/Feedpage';
 import ProfilePage from './Pages/ProfilePage';
 import ErrorPage from './Pages/ErrorPage';
+import PageProtector from './components/PageProtector';
+
 
 
 
@@ -13,9 +15,17 @@ function App() {
       <Routes>
         <Route path='/' element={<LoginPage/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
-        <Route path='/homepage' element={<Feedpage/>}/>
-        <Route path='/:id' element={<ProfilePage/>}/>
-        <Route path='*' element={<ErrorPage/>}/>
+        <Route path='/homepage' element={<PageProtector>
+              <FeedPage/>
+          </PageProtector>}/>
+        <Route path='/:id' element={<PageProtector>
+              <ProfilePage/>
+          </PageProtector>}/>
+        <Route path='*' element={
+          <PageProtector>
+              <ErrorPage/>
+          </PageProtector>
+          }/>
       </Routes>
     </Router>
     

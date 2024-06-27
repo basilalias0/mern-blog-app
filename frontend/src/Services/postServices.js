@@ -32,3 +32,7 @@ export const updatePostAPI = async({title,postId,content})=>{
     }) 
     return response.data
 }
+export const deletePostAPI = async(postId)=>{
+    const response = await axios.delete(`${BASE_URL}/post/${postId}`)
+    return response.data
+}

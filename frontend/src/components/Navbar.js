@@ -142,7 +142,7 @@ function Navbar() {
         
         <div className="flex w-full gap-0 text-xl text-white basis-auto ">
           <button  onClick={handleLinkToProfile}  className=' flex items-center justify-center w-aut shrink-0 my-auto'>
-          <img className='shrink-0 my-auto w-12 h-12 rounded-full' src={profile.profileImage||proPic} alt='Profile Pic'/>
+          <img className='shrink-0 my-auto w-12 h-12 rounded-full' src={profile?.profileImage||proPic} alt='Profile Pic'/>
           <span className=" justify-center items-start px-4 py-6 bg-sky-500  w-auto pr-5">
             <span >{profile?.name}</span>
           </span>
