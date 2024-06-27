@@ -280,7 +280,9 @@ const UserController = {
           });
         const updatedData = await User.findOneAndUpdate({username},
             {profileImage:uploadResponse.secure_url}
+            
         )
+        console.log(updatedData);
         if(!updatedData){
             throw new Error("No pic updated")
         }
@@ -294,14 +296,13 @@ const UserController = {
                 sameSite:'none',
                 httpOnly:true,
                 secure:true})
-            const userFoundNt = await User.findOne({username})
         res.json({
-            name:userFound.name,
-            email:userFound.email,
+            name:updatedData.name,
+            email:updatedData.email,
             username,
             token,
-            id:userFound._id,
-            profileImage:userFoundNt.profileImage
+            id:updatedData._id,
+            profileImage:updatedData.profileImage
             })
       
     }),

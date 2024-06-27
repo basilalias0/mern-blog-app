@@ -81,7 +81,6 @@ const commentController = {
     }),
     deleteComment:asyncHandler(async(req,res)=>{
         const {commentId,postId} = req.params
-        console.log(commentId);
         const {username} = req.user
         const deletedComment = await Comment.findByIdAndDelete(commentId)
         if(!deletedComment){

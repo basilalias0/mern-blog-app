@@ -13,7 +13,6 @@ function UpdateProfileImage({show,setShow}) {
     const dispatch = useDispatch()
 
     const handleChange = (e)=>{
-        console.log(e.target.files[0]);
         setImage(e.target.files[0])
         
     }
