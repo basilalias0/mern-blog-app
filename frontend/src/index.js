@@ -16,7 +16,6 @@ root.render(
     <Provider store={Store}>
      <App />
      </Provider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
      
     
