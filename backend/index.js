@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 const corsOption ={
-    origin: 'http://13.49.185.247:3000',
+    origin: 'http://localhost:3000',
     credentials: true
 }
 app.use(cors(corsOption))
@@ -45,4 +45,4 @@ app.use(errorHandler)
 
 
 
-app.listen(5000,console.log("http://13.49.185.247:5000"))
+app.listen(5000,console.log("http://localhost:5000"))

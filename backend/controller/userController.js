@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const { Error } = require('mongoose')
 const User = require('../model/userModel/userModel')
 const Post = require('../model/postModel/postModel')
