@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 const corsOption ={
-    origin: 'http://localhost:3000',
+    origin: 'https://blog-app-self-xi.vercel.app/',
     credentials: true
 }
 app.use(cors(corsOption))
@@ -45,4 +45,4 @@ app.use(errorHandler)
 
 
 
-app.listen(5000,console.log("http://localhost:5000"))
+app.listen(5000,console.log("https://mern-blog-app-6knb.onrender.com"))
