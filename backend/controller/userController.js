@@ -269,6 +269,7 @@ const UserController = {
     uploadProfilePhoto:asyncHandler(async(req,res)=>{
         const {username} = req.user
         const userFound = await User.findOne({username})
+        
         if(!userFound){
             throw new Error("User Not Found")
         }
@@ -278,6 +279,7 @@ const UserController = {
             api_secret: process.env.CLOUDINARY_SECRET_KEY,
             preset:'blog-app-v4',
           });
+
         const updatedData = await User.findOneAndUpdate({username},
             {profileImage:uploadResponse.secure_url}
             
@@ -285,6 +287,12 @@ const UserController = {
         if(!updatedData){
             throw new Error("No pic updated")
         }
+ 
+        const userForSent = await User.findOne({username})
+        if(!userForSent){
+            throw new Error("No user 2")
+        }
+
             const payload={
                 username
             }
@@ -296,12 +304,12 @@ const UserController = {
                 httpOnly:true,
                 secure:true})
         res.json({
-            name:updatedData.name,
-            email:updatedData.email,
+            name:userForSent.name,
+            email:userForSent.email,
             username,
             token,
-            id:updatedData._id,
-            profileImage:updatedData.profileImage
+            id:userForSent._id,
+            profileImage:userForSent.profileImage
             })
       
     }),
