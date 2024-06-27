@@ -2,12 +2,15 @@ import {  useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { updateProfileImgAPI } from '../Services/userServices';
 import Alert from '@mui/material/Alert';
+import { useDispatch } from 'react-redux';
+import { userUpdateAction } from '../Redux/AuthSlice';
 
 
 function UpdateProfileImage({show,setShow}) {
     
     const[image,setImage] =useState(null)
     const queryClient = useQueryClient()
+    const dispatch = useDispatch()
 
     const handleChange = (e)=>{
         console.log(e.target.files[0]);
@@ -28,6 +31,7 @@ function UpdateProfileImage({show,setShow}) {
     const formData = new FormData()
     formData.append('file',image)
     mutateAsync({formData}).then((data)=>{
+        dispatch(userUpdateAction(data))
         queryClient.invalidateQueries('fetch-user-data')
         setShow(false)
     })

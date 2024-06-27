@@ -282,7 +282,14 @@ const UserController = {
             {profileImage:uploadResponse.secure_url}
         )
        
-        res.send(updatedData)
+        res.json({
+            name:userFound.name,
+            email:userFound.email,
+            username,
+            token,
+            id:userFound._id,
+            profileImage:userFound.profileImage
+            })
       
     }),
 
