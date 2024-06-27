@@ -9,7 +9,7 @@ import { updateUsernameAPI } from '../Services/userServices';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 
-function UpdateUsernameBox({show,setShow}) {
+function UpdateUsernameBox({show,setShow,setUpdate}) {
 
   const dispatch = useDispatch()
 
@@ -46,6 +46,7 @@ function UpdateUsernameBox({show,setShow}) {
           Cookies.set("userData",JSON.stringify(data),{expires:1})
           setShow(false)
           resetForm()
+          setUpdate(false)
           navigate(`/${data?.username}`)
         })
       .catch((e)=>console.log(e))

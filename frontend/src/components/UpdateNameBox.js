@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { userUpdateAction } from '../Redux/AuthSlice';
 import Alert from '@mui/material/Alert';
 
-function UpdateNameBox({show,setShow}) {
+function UpdateNameBox({show,setShow,setUpdate}) {
 
     const dispatch = useDispatch()
 
@@ -44,6 +44,7 @@ function UpdateNameBox({show,setShow}) {
           dispatch(userUpdateAction(data))
           Cookies.set("userData",JSON.stringify(data),{expires:1})
           setShow(false)
+          setUpdate(false)
           resetForm()
         })
       .catch((e)=>console.log(e))

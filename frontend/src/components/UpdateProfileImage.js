@@ -7,7 +7,7 @@ import { userUpdateAction } from '../Redux/AuthSlice';
 import Cookies from 'js-cookie'
 
 
-function UpdateProfileImage({show,setShow}) {
+function UpdateProfileImage({show,setShow,setUpdate}) {
     
     const[image,setImage] =useState(null)
     const queryClient = useQueryClient()
@@ -35,6 +35,7 @@ function UpdateProfileImage({show,setShow}) {
         Cookies.set("userData",JSON.stringify(data),{expires:1})
         dispatch(userUpdateAction(data))
         queryClient.invalidateQueries('fetch-user-data')
+        setUpdate(false)
         setShow(false)
     })
     }

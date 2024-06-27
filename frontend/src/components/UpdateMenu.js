@@ -6,7 +6,7 @@ import UpdateProfileImage from "./UpdateProfileImage.js";
 
 
 
-function UpdateMenu() {
+function UpdateMenu({setUpdate}) {
     
     const [isUpdateNameOpen,setIsUpdateNameOpen] = useState(false)
     const [isUpdateUsernameOpen,setIsUpdateUsernameOpen] = useState(false)
@@ -47,10 +47,10 @@ function UpdateMenu() {
             
             
             </div>
-            {isUpdateNameOpen && <UpdateNameBox show={isUpdateNameOpen} setShow={setIsUpdateNameOpen}/>}
-            {isUpdateUsernameOpen && <UpdateUsernameBox show={isUpdateUsernameOpen} setShow={setIsUpdateUsernameOpen}/>}
-            {isUpdatePasswordOpen && <UpdatePasswordBox show={isUpdatePasswordOpen} setShow={setIsUpdatePasswordOpen}/>}
-            {isUpdateProfileImgOpen && <UpdateProfileImage show={isUpdateProfileImgOpen} setShow={setIsUpdateProfileImgOpen}/>}
+            {isUpdateNameOpen && <UpdateNameBox show={isUpdateNameOpen} setShow={setIsUpdateNameOpen} setUpdate={setUpdate}/>}
+            {isUpdateUsernameOpen && <UpdateUsernameBox show={isUpdateUsernameOpen} setShow={setIsUpdateUsernameOpen} setUpdate={setUpdate}/>}
+            {isUpdatePasswordOpen && <UpdatePasswordBox show={isUpdatePasswordOpen} setShow={setIsUpdatePasswordOpen} setUpdate={setUpdate}/>}
+            {isUpdateProfileImgOpen && <UpdateProfileImage show={isUpdateProfileImgOpen} setShow={setIsUpdateProfileImgOpen} setUpdate={setUpdate}/>}
           </aside>
           
         

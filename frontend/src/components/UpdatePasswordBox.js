@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import Alert from '@mui/material/Alert';
 import { updatePasswordAPI } from '../Services/userServices';
 
-function UpdatePasswordBox({show,setShow}) {
+function UpdatePasswordBox({show,setShow,setUpdate}) {
     const [isOldPasswordErrorActive,setIsOldPasswordErrorActive]=useState(true)
     const [isNewPasswordErrorActive,setIsNewPasswordErrorActive]=useState(true)
     const [isConfirmPasswordErrorActive,setIsConfirmPasswordErrorActive]=useState(true)
@@ -51,6 +51,7 @@ function UpdatePasswordBox({show,setShow}) {
       .then((data)=>
         {
           setShow(false)
+          setUpdate(false)
           resetForm()
         })
       .catch((e)=>console.log(e))
