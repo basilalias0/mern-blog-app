@@ -282,7 +282,6 @@ const UserController = {
             {profileImage:uploadResponse.secure_url}
             
         )
-        console.log(updatedData);
         if(!updatedData){
             throw new Error("No pic updated")
         }

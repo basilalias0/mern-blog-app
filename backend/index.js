@@ -45,4 +45,4 @@ app.use(errorHandler)
 
 
 
-app.listen(5000,console.log("https://mern-blog-app-6knb.onrender.com"))
+app.listen(5000,console.log("https://mern-blog-app-bwnp.onrender.com"))
