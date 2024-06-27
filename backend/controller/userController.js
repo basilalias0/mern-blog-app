@@ -156,8 +156,8 @@ const UserController = {
     
             res.cookie('token',token,{
                 maxAge:1*24*60*60*1000,
-                secure:false,
-                sameSite:'strict',
+                secure:true,
+                sameSite:'none',
                 httpOnly:true,
     
             })
@@ -196,8 +196,8 @@ const UserController = {
             res.cookie('token',token,{
                 maxAge:1*24*60*1000,
                 httpOnly:true,
-                secure:false,
-                sameSite:true
+                secure:true,
+                sameSite:'none'
             })
 
             res.json({
@@ -236,8 +236,8 @@ const UserController = {
         res.cookie('token',token,{
             maxAge:1*24*60*1000,
             httpOnly:true,
-            secure:false,
-            sameSite:true
+            secure:true,
+            sameSite:'none'
         })
         res.json({
             name:userFound.name,
@@ -281,6 +281,20 @@ const UserController = {
         const updatedData = await User.findOneAndUpdate({username},
             {profileImage:uploadResponse.secure_url}
         )
+        if(!updatedData){
+            throw new Error("No pic updated")
+        }
+        if(updatedData){
+            const payload={
+                username
+            }}
+            const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
+
+            res.cookie('token',token,{
+                maxAge:1*24*60*60*1000,
+                sameSite:'none',
+                httpOnly:true,
+                secure:true})
        
         res.json({
             name:userFound.name,
