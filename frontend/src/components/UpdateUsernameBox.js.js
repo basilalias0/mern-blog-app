@@ -42,7 +42,6 @@ function UpdateUsernameBox({show,setShow}) {
       mutateAsync(values)
       .then((data)=>
         {
-          
           dispatch(userUpdateAction(data))
           Cookies.set("userData",JSON.stringify(data),{expires:1})
           setShow(false)

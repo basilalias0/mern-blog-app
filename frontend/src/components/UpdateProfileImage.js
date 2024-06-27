@@ -5,6 +5,7 @@ import Alert from '@mui/material/Alert';
 import { useDispatch } from 'react-redux';
 import { userUpdateAction } from '../Redux/AuthSlice';
 import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom';
 
 
 function UpdateProfileImage({show,setShow}) {
@@ -12,6 +13,7 @@ function UpdateProfileImage({show,setShow}) {
     const[image,setImage] =useState(null)
     const queryClient = useQueryClient()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleChange = (e)=>{
         setImage(e.target.files[0])
@@ -35,6 +37,7 @@ function UpdateProfileImage({show,setShow}) {
         dispatch(userUpdateAction(data))
         queryClient.invalidateQueries('fetch-user-data')
         setShow(false)
+        navigate(`/${data?.username}`)
     })
     }
 
