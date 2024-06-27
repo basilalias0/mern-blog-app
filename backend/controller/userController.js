@@ -284,10 +284,9 @@ const UserController = {
         if(!updatedData){
             throw new Error("No pic updated")
         }
-        if(updatedData){
             const payload={
                 username
-            }}
+            }
             const token = jwt.sign(payload,process.env.JWT_SECRET_KEY)
 
             res.cookie('token',token,{
