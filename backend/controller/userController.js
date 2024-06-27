@@ -294,14 +294,14 @@ const UserController = {
                 sameSite:'none',
                 httpOnly:true,
                 secure:true})
-       
+            const userFoundNt = await User.findOne({username})
         res.json({
             name:userFound.name,
             email:userFound.email,
             username,
             token,
             id:userFound._id,
-            profileImage:userFound.profileImage
+            profileImage:userFoundNt.profileImage
             })
       
     }),
