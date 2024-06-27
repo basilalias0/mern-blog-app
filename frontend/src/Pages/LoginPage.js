@@ -67,9 +67,9 @@ function LoginPage() {
      })
 
   return (
-    <div className="container mx-auto sm:px-6 lg:px-8 h-screen">
-      <div className="flex items-center justify-center h-full">
-    <div className="pl-12 bg-white rounded-lg border border-sky-700 border-solid shadow-sm  max-md:pr-5">
+    <div className="container mx-auto sm:px-6 lg:px-8 min-h-screen">
+      <div className="flex items-center justify-center min-h-full">
+    <div className="pl-12 bg-white rounded-lg border border-sky-700 border-solid shadow-sm max-md:pl-5 max-md:pr-5">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <main className="flex flex-col w-[58%] max-md:ml-0 max-md:w-full">
           <SectionHeader
