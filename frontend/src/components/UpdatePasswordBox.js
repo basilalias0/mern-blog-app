@@ -22,9 +22,6 @@ function UpdatePasswordBox({show,setShow}) {
         
 
   const closeBtn = ()=>setShow(false)
-  
-
-  const queryClient = useQueryClient()
 
   const{mutateAsync,isError,error,isPending}= useMutation({
     mutationFn:updatePasswordAPI,
@@ -53,7 +50,6 @@ function UpdatePasswordBox({show,setShow}) {
       mutateAsync(values)
       .then((data)=>
         {
-          queryClient.invalidateQueries('')
           setShow(false)
           resetForm()
         })

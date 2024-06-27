@@ -4,6 +4,7 @@ import { updateProfileImgAPI } from '../Services/userServices';
 import Alert from '@mui/material/Alert';
 import { useDispatch } from 'react-redux';
 import { userUpdateAction } from '../Redux/AuthSlice';
+import Cookies from 'js-cookie'
 
 
 function UpdateProfileImage({show,setShow}) {
@@ -30,6 +31,7 @@ function UpdateProfileImage({show,setShow}) {
     const formData = new FormData()
     formData.append('file',image)
     mutateAsync({formData}).then((data)=>{
+        Cookies.set("userData",JSON.stringify(data),{expires:1})
         dispatch(userUpdateAction(data))
         queryClient.invalidateQueries('fetch-user-data')
         setShow(false)
