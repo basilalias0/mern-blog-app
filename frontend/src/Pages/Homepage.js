@@ -4,7 +4,7 @@ import CreatePost from "../components/CreatePost";
 import ViewPost from "../components/ViewPost";
 
 
-function FeedPage() {
+function HomePage() {
   return (
     <div>
       <Navbar/>
@@ -15,4 +15,4 @@ function FeedPage() {
   );
 }
 
-export default FeedPage;
+export default HomePage;
