@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 const corsOption ={
-    origin: 'https://blog-app-self-xi.vercel.app',
+    origin: 'https://mern-blog-app-eight-jade.vercel.app',
     credentials: true
 }
 app.use(cors(corsOption))
