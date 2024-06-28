@@ -135,7 +135,9 @@ function SignupPage() {
           <p className="mt-5 text-xl font-medium text-slate-600 max-md:mt-10 max-md:max-w-full">
              Have an account?
           </p>
-          <Link to='/' className=" pb-12 text-xl font-medium underline text-stone-900 max-md:max-w-full">Login here!</Link>
+          <div className="pb-12 max-md:max-w-full" >
+          <Link to='/' className=" text-xl font-medium underline text-stone-900 ">Login here!</Link>
+          </div>
         </main>
         <AuthPageAside/>
       </div>

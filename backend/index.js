@@ -29,6 +29,7 @@ app.use(express.json())
 
 const corsOption ={
     origin: 'https://mern-blog-app-eight-jade.vercel.app',
+    optionsSuccessStatus: 200,
     credentials: true
 }
 app.use(cors(corsOption))

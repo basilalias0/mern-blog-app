@@ -112,7 +112,10 @@ function LoginPage() {
           <p className="mt-20 text-xl font-medium text-slate-600 max-md:mt-10 max-md:max-w-full">
             Don’t have an account?
           </p>
-          <Link to="/signup" className="pb-12 text-xl font-medium underline text-stone-900 max-md:max-w-full">Create One Now!!!</Link>
+          <div className="pb-12 max-md:max-w-full" >
+          <Link to="/signup" className="text-xl font-medium underline text-stone-900">Create One Now!!!</Link>
+          </div>
+          
         </main>
         <AuthPageAside/>
       </div>
