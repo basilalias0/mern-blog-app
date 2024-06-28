@@ -28,7 +28,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 const corsOption ={
-    origin: 'https://mern-blog-app-eight-jade.vercel.app',
+    origin: 'http://localhost:3000',
     optionsSuccessStatus: 200,
     credentials: true
 }
