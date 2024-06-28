@@ -77,8 +77,8 @@ function UserProfile() {
           </div>
         </div>
       </section>}
-      { isUpdateOpen && <UpdateMenu/>}
-      { isCreateOpen && <CreatePost setUpdate ={setIsUpdateOpen}/>}
+      { isUpdateOpen && <UpdateMenu setUpdate={setIsUpdateOpen}/>}
+      { isCreateOpen && <CreatePost />}
     </main>
     {data &&<UserPost data={data?.userPost} profileImage={data?.profileImage} authorName={data?.name}/>}
     </>
