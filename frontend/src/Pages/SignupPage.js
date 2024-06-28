@@ -68,9 +68,9 @@ function SignupPage() {
         }
      })
   return (
-    <div className="w-full flex items-center justify-center mx-auto sm:px-6 lg:px-8 min-h-vh h-dvh ">
-      <div className="flex items-center justify-center min-h-full max-md:my-4 max-md:py-2">
-    <div className="pl-12 bg-white rounded-lg border border-sky-700 border-solid shadow-sm max-md:pl-5 max-md:pr-5">
+    <div className="container flex items-center justify-center mx-auto sm:px-6 lg:px-8 min-h-screen">
+      <div className="flex items-center justify-center min-h-full max-md:my-4 ">
+    <div className="pl-12 bg-white rounded-lg border border-sky-700 border-solid shadow-sm max-md:pl-5 max-md:pr-5 max-md:py-4">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <main className="flex flex-col w-[58%] max-md:ml-0 max-md:w-full">
           <SectionHeader
